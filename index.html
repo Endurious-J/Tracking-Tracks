@@ -30,22 +30,20 @@
     }
 
     html, body {
-      height: 100%;
       font-family: 'DM Sans', sans-serif;
       background: var(--charcoal);
       color: var(--white);
-      overflow: hidden;
     }
 
     /* ── HEADER ── */
     header {
-      position: fixed; top: 0; left: 0; right: 0;
       height: var(--header-h);
       background: var(--charcoal);
       border-bottom: 1px solid var(--charcoal-3);
       display: flex; align-items: center; gap: 16px;
       padding: 0 20px;
-      z-index: 1000;
+      position: relative;
+      z-index: 100;
     }
     header .logo {
       font-family: 'Bebas Neue', sans-serif;
@@ -66,8 +64,8 @@
     /* ── LAYOUT ── */
     .app {
       display: flex;
-      padding-top: var(--header-h);
-      height: 100vh;
+      height: 80vh;
+      min-height: 500px;
     }
 
     /* ── SIDEBAR ── */
@@ -241,8 +239,8 @@
 
     /* Tracks popup */
     .tracks-popup {
-      position: fixed;
-      bottom: 70px; left: 16px;
+      position: absolute;
+      bottom: 0; left: 16px;
       width: 280px;
       max-height: 420px;
       background: var(--charcoal-2);
@@ -785,7 +783,7 @@
 
     /* ── STATS DRAWER ── */
     .stats-drawer {
-      position: fixed; top: var(--header-h); right: 0; bottom: 0;
+      position: absolute; top: 0; right: 0; bottom: 0;
       width: 360px;
       background: var(--charcoal-2);
       border-left: 1px solid var(--charcoal-3);
@@ -986,6 +984,7 @@
 
 <div class="toast" id="toast"></div>
 
+<div style="position:relative;">
 <div class="app">
   <aside>
     <div class="sidebar-top">
@@ -1072,7 +1071,7 @@
       <div class="ov-highlight" id="ov-highlight"></div>
     </div>
   </div>
-</div>
+</div><!-- end .app -->
 
 <!-- Tracks popup -->
 <div class="tracks-popup" id="tracks-popup">
@@ -1084,6 +1083,8 @@
     <div class="no-tracks">No tracks loaded yet.<br/>Import GPX or ZIP files to begin.</div>
   </div>
 </div>
+
+</div><!-- end position:relative wrapper -->
 
 <!-- Share modal -->
 <div class="share-modal-backdrop" id="share-modal">
