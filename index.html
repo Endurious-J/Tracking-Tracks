@@ -218,6 +218,67 @@
     }
     .track-delete:hover { color: #ef5350; }
 
+    /* Tracks popup button */
+    .btn-tracks-popup {
+      display: flex; align-items: center; gap: 7px;
+      background: none; border: none;
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px; letter-spacing: 2px;
+      color: var(--sand); cursor: pointer;
+      text-transform: uppercase; padding: 0;
+      transition: color 0.2s;
+    }
+    .btn-tracks-popup:hover:not(:disabled) { color: var(--orange); }
+    .btn-tracks-popup:disabled { opacity: 0.35; cursor: default; }
+    .tracks-badge {
+      background: var(--orange); color: var(--white);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 10px; font-weight: 600;
+      border-radius: 10px; padding: 1px 6px;
+      min-width: 18px; text-align: center;
+      letter-spacing: 0;
+    }
+
+    /* Tracks popup */
+    .tracks-popup {
+      position: fixed;
+      bottom: 70px; left: 16px;
+      width: 280px;
+      max-height: 420px;
+      background: var(--charcoal-2);
+      border: 1px solid var(--charcoal-3);
+      border-radius: 8px;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+      z-index: 800;
+      display: none;
+      flex-direction: column;
+      overflow: hidden;
+    }
+    .tracks-popup.open { display: flex; }
+
+    .tracks-popup-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 10px 14px;
+      border-bottom: 1px solid var(--charcoal-3);
+      flex-shrink: 0;
+    }
+    .tracks-popup-header h3 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: 13px; letter-spacing: 2px;
+      color: var(--sand-dim); text-transform: uppercase; margin: 0;
+    }
+    .tracks-popup-close {
+      background: none; border: none; color: var(--text-muted);
+      cursor: pointer; font-size: 18px; line-height: 1;
+      transition: color 0.15s; padding: 0 2px;
+    }
+    .tracks-popup-close:hover { color: var(--white); }
+
+    /* Track list inside popup */
+    .tracks-popup .track-list {
+      flex: 1; overflow-y: auto; padding: 6px 0; min-height: 0;
+    }
+
     /* Clear all button */
     .btn-clear {
       background: transparent;
@@ -979,18 +1040,19 @@
 
     </div><!-- end sidebar-top -->
 
-    <!-- TRACKS HEADER -->
+    <!-- TRACKS BUTTON -->
     <div class="sidebar-tracks-header">
-      <h3>Tracks</h3>
+      <button class="btn-tracks-popup" id="btn-tracks-popup" disabled>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14H6L5 6"/><path d="M10 11v6M14 11v6"/>
+        </svg>
+        Tracks
+        <span class="tracks-badge" id="tracks-badge">0</span>
+      </button>
       <div style="display:flex;gap:6px;">
         <button class="btn-fit" id="btn-fit" disabled>Fit all</button>
         <button class="btn-clear" id="btn-clear" disabled>Clear all</button>
       </div>
-    </div>
-
-    <!-- TRACK LIST -->
-    <div class="track-list" id="track-list">
-      <div class="no-tracks">No tracks loaded yet.<br/>Import GPX or ZIP files to begin.</div>
     </div>
 
   </aside>
@@ -1009,6 +1071,17 @@
       <div class="ov-stat"><span>Countries</span><span class="ov-val" id="ov-countries">—</span></div>
       <div class="ov-highlight" id="ov-highlight"></div>
     </div>
+  </div>
+</div>
+
+<!-- Tracks popup -->
+<div class="tracks-popup" id="tracks-popup">
+  <div class="tracks-popup-header">
+    <h3>Tracks</h3>
+    <button class="tracks-popup-close" id="tracks-popup-close">×</button>
+  </div>
+  <div class="track-list" id="track-list">
+    <div class="no-tracks">No tracks loaded yet.<br/>Import GPX or ZIP files to begin.</div>
   </div>
 </div>
 
@@ -1634,6 +1707,9 @@ function updateStats() {
   document.getElementById('stat-km').textContent = tracks.reduce((a,t)=>a+t.km,0).toLocaleString();
   document.getElementById('stat-visible').textContent = visible.length;
   document.getElementById('stat-countries').textContent = countries.size;
+  document.getElementById('tracks-badge').textContent = tracks.length;
+  const hasTrack = tracks.length > 0;
+  document.getElementById('btn-tracks-popup').disabled = !hasTrack;
   if (document.getElementById('stats-drawer').classList.contains('open')) renderDrawer();
 }
 
@@ -1679,6 +1755,7 @@ function clearAllTracks() {
   rebuildYearFilter();
   rebuildCountryFilter();
   renderTrackList();
+  document.getElementById('tracks-popup').classList.remove('open');
   document.getElementById('map-empty').style.display = 'block';
   document.getElementById('btn-fit').disabled = true;
   document.getElementById('btn-export').disabled = true;
@@ -1874,6 +1951,14 @@ document.getElementById('btn-reset').addEventListener('click', () => {
 document.getElementById('btn-fit').addEventListener('click', fitAll);
 document.getElementById('btn-export').addEventListener('click', exportZip);
 document.getElementById('btn-clear').addEventListener('click', clearAllTracks);
+
+// ── TRACKS POPUP ──────────────────────────────────────────
+document.getElementById('btn-tracks-popup').addEventListener('click', () => {
+  document.getElementById('tracks-popup').classList.toggle('open');
+});
+document.getElementById('tracks-popup-close').addEventListener('click', () => {
+  document.getElementById('tracks-popup').classList.remove('open');
+});
 
 // ── HELP MODAL ────────────────────────────────────────────
 function openHelp() { document.getElementById('help-modal').classList.add('open'); }
