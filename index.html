@@ -310,13 +310,12 @@
     .share-modal-backdrop {
       position: fixed; inset: 0;
       background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(4px);
       z-index: 9999;
-      display: none; align-items: center; justify-content: center;
-      opacity: 0;
-      transition: opacity 0.25s;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
     }
-    .share-modal-backdrop.open { display: flex; opacity: 1; }
+    .share-modal-backdrop.open { opacity: 1; pointer-events: all; }
 
     .share-modal {
       background: var(--charcoal-2);
@@ -486,13 +485,12 @@
     .modal-backdrop {
       position: fixed; inset: 0;
       background: rgba(0,0,0,0.6);
-      backdrop-filter: blur(3px);
       z-index: 9999;
-      display: none; align-items: center; justify-content: center;
-      opacity: 0;
-      transition: opacity 0.25s;
+      display: flex; align-items: center; justify-content: center;
+      opacity: 0; pointer-events: none;
+      transition: opacity 0.2s;
     }
-    .modal-backdrop.open { display: flex; opacity: 1; }
+    .modal-backdrop.open { opacity: 1; pointer-events: all; }
 
     .modal {
       background: var(--charcoal-2);
@@ -1089,7 +1087,7 @@
 </div><!-- end position:relative wrapper -->
 
 <!-- Share modal -->
-<div class="share-modal-backdrop" id="share-modal">
+<div class="share-modal-backdrop" id="share-modal" style="display:none;">
   <div class="share-modal">
     <div class="share-modal-header">
       <h2>Share your tracks</h2>
@@ -1136,11 +1134,11 @@
 </div>
 
 <!-- Help modal -->
-<div class="modal-backdrop" id="help-modal">
+<div class="modal-backdrop" id="help-modal" style="display:none;">
   <div class="modal">
     <div class="modal-header">
       <div>
-        <h2>How to use MotoTracks</h2>
+        <h2>How to use Endurious</h2>
         <div class="modal-header-sub">Your personal ride visualizer — everything runs in your browser</div>
       </div>
       <button class="modal-close" id="modal-close">×</button>
@@ -1964,8 +1962,16 @@ document.getElementById('tracks-popup-close').addEventListener('click', () => {
 });
 
 // ── HELP MODAL ────────────────────────────────────────────
-function openHelp() { document.getElementById('help-modal').classList.add('open'); }
-function closeHelp() { document.getElementById('help-modal').classList.remove('open'); }
+function openHelp() {
+  const el = document.getElementById('help-modal');
+  el.style.display = 'flex';
+  requestAnimationFrame(() => el.classList.add('open'));
+}
+function closeHelp() {
+  const el = document.getElementById('help-modal');
+  el.classList.remove('open');
+  setTimeout(() => { el.style.display = 'none'; }, 220);
+}
 
 document.getElementById('btn-help').addEventListener('click', openHelp);
 document.getElementById('modal-close').addEventListener('click', closeHelp);
@@ -1982,10 +1988,14 @@ function openShareModal() {
   document.getElementById('btn-download-img').disabled = true;
   const wrap = document.getElementById('share-preview-wrap');
   wrap.innerHTML = '<div class="share-preview-placeholder">Click <strong style="color:var(--sand)">Generate preview</strong> to create your share image</div>';
-  document.getElementById('share-modal').classList.add('open');
+  const el = document.getElementById('share-modal');
+  el.style.display = 'flex';
+  requestAnimationFrame(() => el.classList.add('open'));
 }
 function closeShareModal() {
-  document.getElementById('share-modal').classList.remove('open');
+  const el = document.getElementById('share-modal');
+  el.classList.remove('open');
+  setTimeout(() => { el.style.display = 'none'; }, 220);
   document.getElementById('share-overlay').style.display = 'none';
 }
 
