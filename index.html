@@ -30,22 +30,22 @@
     }
 
     html, body {
+      height: 100%;
       font-family: 'DM Sans', sans-serif;
       background: var(--charcoal);
       color: var(--white);
+      overflow: hidden;
     }
 
     /* ── HEADER ── */
     header {
-      min-height: var(--header-h);
-      height: auto;
+      position: fixed; top: 0; left: 0; right: 0;
+      height: var(--header-h);
       background: var(--charcoal);
       border-bottom: 1px solid var(--charcoal-3);
-      display: flex; align-items: center; gap: 12px;
-      padding: 8px 20px;
-      position: relative;
-      z-index: 10;
-      flex-wrap: wrap;
+      display: flex; align-items: center; gap: 16px;
+      padding: 0 20px;
+      z-index: 1000;
     }
     header .logo {
       font-family: 'Bebas Neue', sans-serif;
@@ -66,8 +66,8 @@
     /* ── LAYOUT ── */
     .app {
       display: flex;
-      height: 80vh;
-      min-height: 500px;
+      padding-top: var(--header-h);
+      height: 100vh;
     }
 
     /* ── SIDEBAR ── */
@@ -241,8 +241,8 @@
 
     /* Tracks popup */
     .tracks-popup {
-      position: absolute;
-      bottom: 52px; left: 16px;
+      position: fixed;
+      bottom: 70px; left: 16px;
       width: 280px;
       max-height: 420px;
       background: var(--charcoal-2);
@@ -310,10 +310,11 @@
     .share-modal-backdrop {
       position: fixed; inset: 0;
       background: rgba(0,0,0,0.7);
-      z-index: 9999;
+      backdrop-filter: blur(4px);
+      z-index: 3000;
       display: flex; align-items: center; justify-content: center;
       opacity: 0; pointer-events: none;
-      transition: opacity 0.2s;
+      transition: opacity 0.25s;
     }
     .share-modal-backdrop.open { opacity: 1; pointer-events: all; }
 
@@ -485,10 +486,11 @@
     .modal-backdrop {
       position: fixed; inset: 0;
       background: rgba(0,0,0,0.6);
-      z-index: 9999;
+      backdrop-filter: blur(3px);
+      z-index: 2000;
       display: flex; align-items: center; justify-content: center;
       opacity: 0; pointer-events: none;
-      transition: opacity 0.2s;
+      transition: opacity 0.25s;
     }
     .modal-backdrop.open { opacity: 1; pointer-events: all; }
 
@@ -783,7 +785,7 @@
 
     /* ── STATS DRAWER ── */
     .stats-drawer {
-      position: absolute; top: 0; right: 0; bottom: 0;
+      position: fixed; top: var(--header-h); right: 0; bottom: 0;
       width: 360px;
       background: var(--charcoal-2);
       border-left: 1px solid var(--charcoal-3);
@@ -984,7 +986,6 @@
 
 <div class="toast" id="toast"></div>
 
-<div style="position:relative;">
 <div class="app">
   <aside>
     <div class="sidebar-top">
@@ -1084,10 +1085,8 @@
   </div>
 </div>
 
-</div><!-- end position:relative wrapper -->
-
 <!-- Share modal -->
-<div class="share-modal-backdrop" id="share-modal" style="display:none;">
+<div class="share-modal-backdrop" id="share-modal">
   <div class="share-modal">
     <div class="share-modal-header">
       <h2>Share your tracks</h2>
@@ -1134,7 +1133,7 @@
 </div>
 
 <!-- Help modal -->
-<div class="modal-backdrop" id="help-modal" style="display:none;">
+<div class="modal-backdrop" id="help-modal">
   <div class="modal">
     <div class="modal-header">
       <div>
@@ -1962,16 +1961,8 @@ document.getElementById('tracks-popup-close').addEventListener('click', () => {
 });
 
 // ── HELP MODAL ────────────────────────────────────────────
-function openHelp() {
-  const el = document.getElementById('help-modal');
-  el.style.display = 'flex';
-  requestAnimationFrame(() => el.classList.add('open'));
-}
-function closeHelp() {
-  const el = document.getElementById('help-modal');
-  el.classList.remove('open');
-  setTimeout(() => { el.style.display = 'none'; }, 220);
-}
+function openHelp() { document.getElementById('help-modal').classList.add('open'); }
+function closeHelp() { document.getElementById('help-modal').classList.remove('open'); }
 
 document.getElementById('btn-help').addEventListener('click', openHelp);
 document.getElementById('modal-close').addEventListener('click', closeHelp);
@@ -1988,14 +1979,10 @@ function openShareModal() {
   document.getElementById('btn-download-img').disabled = true;
   const wrap = document.getElementById('share-preview-wrap');
   wrap.innerHTML = '<div class="share-preview-placeholder">Click <strong style="color:var(--sand)">Generate preview</strong> to create your share image</div>';
-  const el = document.getElementById('share-modal');
-  el.style.display = 'flex';
-  requestAnimationFrame(() => el.classList.add('open'));
+  document.getElementById('share-modal').classList.add('open');
 }
 function closeShareModal() {
-  const el = document.getElementById('share-modal');
-  el.classList.remove('open');
-  setTimeout(() => { el.style.display = 'none'; }, 220);
+  document.getElementById('share-modal').classList.remove('open');
   document.getElementById('share-overlay').style.display = 'none';
 }
 
