@@ -37,13 +37,15 @@
 
     /* ── HEADER ── */
     header {
-      height: var(--header-h);
+      min-height: var(--header-h);
+      height: auto;
       background: var(--charcoal);
       border-bottom: 1px solid var(--charcoal-3);
-      display: flex; align-items: center; gap: 16px;
-      padding: 0 20px;
+      display: flex; align-items: center; gap: 12px;
+      padding: 8px 20px;
       position: relative;
-      z-index: 100;
+      z-index: 10;
+      flex-wrap: wrap;
     }
     header .logo {
       font-family: 'Bebas Neue', sans-serif;
@@ -240,7 +242,7 @@
     /* Tracks popup */
     .tracks-popup {
       position: absolute;
-      bottom: 0; left: 16px;
+      bottom: 52px; left: 16px;
       width: 280px;
       max-height: 420px;
       background: var(--charcoal-2);
@@ -309,12 +311,12 @@
       position: fixed; inset: 0;
       background: rgba(0,0,0,0.7);
       backdrop-filter: blur(4px);
-      z-index: 3000;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
+      z-index: 9999;
+      display: none; align-items: center; justify-content: center;
+      opacity: 0;
       transition: opacity 0.25s;
     }
-    .share-modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .share-modal-backdrop.open { display: flex; opacity: 1; }
 
     .share-modal {
       background: var(--charcoal-2);
@@ -485,12 +487,12 @@
       position: fixed; inset: 0;
       background: rgba(0,0,0,0.6);
       backdrop-filter: blur(3px);
-      z-index: 2000;
-      display: flex; align-items: center; justify-content: center;
-      opacity: 0; pointer-events: none;
+      z-index: 9999;
+      display: none; align-items: center; justify-content: center;
+      opacity: 0;
       transition: opacity 0.25s;
     }
-    .modal-backdrop.open { opacity: 1; pointer-events: all; }
+    .modal-backdrop.open { display: flex; opacity: 1; }
 
     .modal {
       background: var(--charcoal-2);
