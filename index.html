@@ -34,18 +34,17 @@
       font-family: 'DM Sans', sans-serif;
       background: var(--charcoal);
       color: var(--white);
-      overflow: hidden;
     }
 
     /* ── HEADER ── */
     header {
-      position: fixed; top: 0; left: 0; right: 0;
+      position: relative;
       height: var(--header-h);
       background: var(--charcoal);
       border-bottom: 1px solid var(--charcoal-3);
       display: flex; align-items: center; gap: 16px;
       padding: 0 20px;
-      z-index: 1000;
+      z-index: 10;
     }
     header .logo {
       font-family: 'Bebas Neue', sans-serif;
@@ -66,8 +65,7 @@
     /* ── LAYOUT ── */
     .app {
       display: flex;
-      padding-top: var(--header-h);
-      height: 100vh;
+      height: 85vh;
     }
 
     /* ── SIDEBAR ── */
@@ -1072,7 +1070,7 @@
       <div class="ov-highlight" id="ov-highlight"></div>
     </div>
   </div>
-</div>
+</div><!-- end .app -->
 
 <!-- Tracks popup -->
 <div class="tracks-popup" id="tracks-popup">
@@ -1137,7 +1135,7 @@
   <div class="modal">
     <div class="modal-header">
       <div>
-        <h2>How to use MotoTracks</h2>
+        <h2>How to use Endurious</h2>
         <div class="modal-header-sub">Your personal ride visualizer — everything runs in your browser</div>
       </div>
       <button class="modal-close" id="modal-close">×</button>
