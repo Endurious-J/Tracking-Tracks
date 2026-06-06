@@ -36,36 +36,40 @@
       color: var(--white);
     }
 
-    /* ── HEADER ── */
-    header {
-      position: relative;
-      height: var(--header-h);
-      background: var(--charcoal);
-      border-bottom: 1px solid var(--charcoal-3);
-      display: flex; align-items: center; gap: 16px;
-      padding: 0 20px;
-      z-index: 10;
-    }
-    header .logo {
-      font-family: 'Bebas Neue', sans-serif;
-      font-size: 26px;
-      letter-spacing: 2px;
-      color: var(--white);
-      line-height: 1;
-    }
-    header .logo span { color: var(--orange); }
-    header .stats {
-      margin-left: auto;
-      display: flex; gap: 24px;
-      font-size: 12px; color: var(--text-muted);
-      font-weight: 300; letter-spacing: 0.5px;
-    }
-    header .stats strong { color: var(--sand); font-weight: 500; }
-
     /* ── LAYOUT ── */
     .app {
       display: flex;
       height: 85vh;
+      min-height: 500px;
+    }
+
+    /* ── MAP COLUMN ── */
+    .map-column {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+    }
+
+    /* ── TOOLBAR ── */
+    .toolbar {
+      background: var(--charcoal);
+      border-bottom: 1px solid var(--charcoal-3);
+      display: flex; align-items: center;
+      justify-content: space-between;
+      padding: 0 14px;
+      height: var(--header-h);
+      flex-shrink: 0;
+      gap: 12px;
+    }
+    .toolbar-stats {
+      display: flex; gap: 20px;
+      font-size: 12px; color: var(--text-muted);
+      font-weight: 300; letter-spacing: 0.5px;
+    }
+    .toolbar-stats strong { color: var(--sand); font-weight: 500; }
+    .toolbar-actions {
+      display: flex; gap: 8px; align-items: center;
     }
 
     /* ── SIDEBAR ── */
@@ -75,7 +79,6 @@
       border-right: 1px solid var(--charcoal-3);
       display: flex; flex-direction: column;
       flex-shrink: 0;
-      height: 100%;
       overflow: hidden;
     }
 
@@ -594,25 +597,6 @@
       font-family: monospace; letter-spacing: 0.5px;
     }
 
-    /* Modal footer */
-    .modal-footer {
-      padding: 14px 24px;
-      border-top: 1px solid var(--charcoal-3);
-      display: flex; align-items: center; justify-content: space-between;
-      flex-shrink: 0;
-    }
-    .modal-footer p { font-size: 11px; color: var(--text-muted); }
-    .modal-footer a { color: var(--sand-dim); text-decoration: none; }
-    .btn-close-modal {
-      background: var(--orange); border: none;
-      color: var(--white); padding: 8px 20px;
-      border-radius: 4px; font-family: 'DM Sans', sans-serif;
-      font-size: 11px; letter-spacing: 1px; font-weight: 500;
-      cursor: pointer; text-transform: uppercase;
-      transition: background 0.2s;
-    }
-    .btn-close-modal:hover { background: var(--orange-dim); }
-
     /* Export button */
     .btn-export {
       display: flex; align-items: center; gap: 7px;
@@ -649,7 +633,7 @@
     /* ── MAP ── */
     #map {
       flex: 1;
-      height: 100%;
+      min-height: 0;
       z-index: 1;
     }
 
@@ -783,7 +767,7 @@
 
     /* ── STATS DRAWER ── */
     .stats-drawer {
-      position: fixed; top: var(--header-h); right: 0; bottom: 0;
+      position: fixed; top: 0; right: 0; bottom: 0;
       width: 360px;
       background: var(--charcoal-2);
       border-left: 1px solid var(--charcoal-3);
@@ -941,47 +925,6 @@
 </head>
 <body>
 
-<header>
-  <div class="logo">Enduri<span>ous</span></div>
-  <div class="stats">
-    <div><strong id="stat-tracks">0</strong> tracks</div>
-    <div><strong id="stat-km">0</strong> km total</div>
-    <div><strong id="stat-visible">0</strong> visible</div>
-    <div><strong id="stat-countries">0</strong> countries</div>
-  </div>
-  <button class="btn-stats" id="btn-stats">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
-      <line x1="6" y1="20" x2="6" y2="14"/>
-    </svg>
-    Statistics
-  </button>
-  <button class="btn-export" id="btn-export" disabled>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
-      <polyline points="7 10 12 15 17 10"/>
-      <line x1="12" y1="15" x2="12" y2="3"/>
-    </svg>
-    Export zip
-  </button>
-  <button class="btn-help" id="btn-help" title="How to use Endurious">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="12" cy="12" r="10"/>
-      <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
-      <line x1="12" y1="17" x2="12.01" y2="17"/>
-    </svg>
-    How to use
-  </button>
-  <button class="btn-share" id="btn-share" disabled>
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-      <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
-      <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
-      <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
-    </svg>
-    Share
-  </button>
-</header>
-
 <div class="toast" id="toast"></div>
 
 <div class="app">
@@ -1055,7 +998,51 @@
 
   </aside>
 
-  <div id="map">
+  <div class="map-column">
+    <!-- Toolbar -->
+    <div class="toolbar">
+      <div class="toolbar-stats">
+        <div><strong id="stat-tracks">0</strong> tracks</div>
+        <div><strong id="stat-km">0</strong> km</div>
+        <div><strong id="stat-visible">0</strong> visible</div>
+        <div><strong id="stat-countries">0</strong> countries</div>
+      </div>
+      <div class="toolbar-actions">
+        <button class="btn-stats" id="btn-stats">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="20" x2="18" y2="10"/><line x1="12" y1="20" x2="12" y2="4"/>
+            <line x1="6" y1="20" x2="6" y2="14"/>
+          </svg>
+          Statistics
+        </button>
+        <button class="btn-export" id="btn-export" disabled>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/>
+            <polyline points="7 10 12 15 17 10"/>
+            <line x1="12" y1="15" x2="12" y2="3"/>
+          </svg>
+          Export zip
+        </button>
+        <button class="btn-share" id="btn-share" disabled>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="18" cy="5" r="3"/><circle cx="6" cy="12" r="3"/><circle cx="18" cy="19" r="3"/>
+            <line x1="8.59" y1="13.51" x2="15.42" y2="17.49"/>
+            <line x1="15.41" y1="6.51" x2="8.59" y2="10.49"/>
+          </svg>
+          Share
+        </button>
+        <button class="btn-help" id="btn-help">
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <circle cx="12" cy="12" r="10"/>
+            <path d="M9.09 9a3 3 0 015.83 1c0 2-3 3-3 3"/>
+            <line x1="12" y1="17" x2="12.01" y2="17"/>
+          </svg>
+          How to use
+        </button>
+      </div>
+    </div>
+
+    <div id="map">
     <div class="map-empty" id="map-empty">
       <div class="big">ENDURIOUS</div>
       <div class="sub">Import GPX files to start exploring your tracks</div>
@@ -1315,11 +1302,13 @@
         </div>
       </div>
 
-    </div>
+      <div class="guide-divider"></div>
 
-    <div class="modal-footer">
-      <p>Your data never leaves your device &nbsp;·&nbsp; No account needed</p>
-      <button class="btn-close-modal" id="btn-close-modal">Got it</button>
+      <!-- PRIVACY NOTE -->
+      <div class="guide-tip">
+        <b>Privacy:</b> Your data never leaves your device. No account needed, no server, no tracking. Everything runs entirely in your browser.
+      </div>
+
     </div>
   </div>
 </div>
@@ -1964,7 +1953,6 @@ function closeHelp() { document.getElementById('help-modal').classList.remove('o
 
 document.getElementById('btn-help').addEventListener('click', openHelp);
 document.getElementById('modal-close').addEventListener('click', closeHelp);
-document.getElementById('btn-close-modal').addEventListener('click', closeHelp);
 document.getElementById('help-modal').addEventListener('click', e => {
   if (e.target === document.getElementById('help-modal')) closeHelp();
 });
